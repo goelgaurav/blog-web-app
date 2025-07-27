@@ -14,3 +14,8 @@
 /blog-backend/src/Blog.Application/bin/Debug/net9.0
 /blog-backend/src/Blog.Application/obj
 /blog-backend/src/Blog.Domain/bin/Debug/net9.0
+/.vs
+/blog-backend/src/.vs/ProjectEvaluation
+/blog-backend/tests/Blog.Tests/.vs/Blog.Tests
+/blog-backend/tests/Blog.Tests/bin/Debug/net9.0
+/blog-backend/tests/Blog.Tests/obj
