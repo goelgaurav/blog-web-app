@@ -1,0 +1,16 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/blog-backend/.gitignore.bak
+/obj
+/blog-backend/src/Blog.Persistence/obj
+/blog-backend/src/Blog.Domain/obj
+/blog-backend/src/Blog.Persistence/bin/Debug/net9.0
+/blog-backend/src/.vs/Blog
+/blog-backend/src/Blog.Api/bin/Debug/net9.0
+/blog-backend/src/Blog.Api/obj
+/blog-backend/src/Blog.Api/Blog.Api.csproj.user
+/blog-backend/src/Blog.Application/bin/Debug/net9.0
+/blog-backend/src/Blog.Application/obj
+/blog-backend/src/Blog.Domain/bin/Debug/net9.0
