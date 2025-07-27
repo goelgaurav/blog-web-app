@@ -8,7 +8,7 @@ namespace Blog.Domain.Entities
 {
     public class BlogPost
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty; // Full blog body (HTML/markdown)
         public string? Author { get; set; } //For MVP scope, Auth and users is out of scope, Author is stored as string.

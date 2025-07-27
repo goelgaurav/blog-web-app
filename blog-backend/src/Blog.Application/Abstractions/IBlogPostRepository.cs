@@ -9,11 +9,11 @@ namespace Blog.Application.Abstractions
 {
     public interface IBlogPostRepository
     {
-        Task<BlogPost?> GetByIdAsync(int id);
-        Task<IEnumerable<BlogPost>> GetAllAsync();
-        Task AddAsync(BlogPost post);
-        Task UpdateAsync(BlogPost post);
-        Task DeleteAsync(BlogPost post);
+        Task<BlogPost?> GetByIdAsync(Guid id);
+        Task<List<BlogPost>> GetAllAsync();
+        Task<BlogPost> AddAsync(BlogPost post);
+        Task<BlogPost?> UpdateAsync(BlogPost post);
+        Task<BlogPost?> DeleteAsync(Guid id);
         Task SaveChangesAsync();
     }
 }

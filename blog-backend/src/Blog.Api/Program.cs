@@ -1,4 +1,6 @@
 using Blog.Application.Abstractions;
+using Blog.Application.Services.BlogPosts;
+using Blog.Application.Validation;
 using Blog.Persistence.DbContexts;
 using Blog.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,8 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
 
 builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IBlogPostService, BlogPostService>();
+builder.Services.AddScoped<BlogPostValidator>();
 
 var app = builder.Build();
 

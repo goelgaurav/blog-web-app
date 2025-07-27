@@ -16,24 +16,38 @@ namespace Blog.Persistence.Repositories
 
         public BlogPostRepository(BlogDbContext context) => _context = context;
 
-        public async Task<BlogPost?> GetByIdAsync(int id) =>
-            await _context.BlogPosts.FindAsync(id);
+        public async Task<BlogPost?> GetByIdAsync(Guid id) =>
+            await _context.BlogPosts.Include(p => p.Comments).FirstOrDefaultAsync(p => p.Id == id);
 
-        public async Task<IEnumerable<BlogPost>> GetAllAsync() =>
+        public async Task<List<BlogPost>> GetAllAsync() =>
             await _context.BlogPosts.Include(p => p.Comments).ToListAsync();
 
-        public async Task AddAsync(BlogPost post) => await _context.BlogPosts.AddAsync(post);
-
-        public Task UpdateAsync(BlogPost post)
+        public async Task<BlogPost> AddAsync(BlogPost post)
         {
-            _context.BlogPosts.Update(post);
-            return Task.CompletedTask;
+            var entry = await _context.BlogPosts.AddAsync(post);
+            await SaveChangesAsync();
+            return entry.Entity;
         }
 
-        public Task DeleteAsync(BlogPost post)
+        public async Task<BlogPost?> UpdateAsync(BlogPost post)
         {
+            var existing = await _context.BlogPosts.FindAsync(post.Id);
+            if (existing is null)
+                return null;
+            _context.Entry(existing).CurrentValues.SetValues(post);
+            await SaveChangesAsync();
+            return existing;
+        }
+
+        public async Task<BlogPost?> DeleteAsync(Guid id)
+        {
+            var post = await _context.BlogPosts.FindAsync(id);
+            if(post is null)
+                return null;
+
             _context.BlogPosts.Remove(post);
-            return Task.CompletedTask;
+            await SaveChangesAsync();
+            return post;
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
