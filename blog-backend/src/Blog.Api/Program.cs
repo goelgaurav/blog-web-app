@@ -1,4 +1,5 @@
 using Blog.Application.Abstractions;
+using Blog.Application.Mappings;
 using Blog.Application.Services.BlogPosts;
 using Blog.Application.Validation;
 using Blog.Persistence.DbContexts;
@@ -17,10 +18,13 @@ builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IBlogPostService, BlogPostService>();
 builder.Services.AddScoped<BlogPostValidator>();
+builder.Services.AddScoped<CommentValidator>();
+
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<BlogPostProfile>());
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline.  
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

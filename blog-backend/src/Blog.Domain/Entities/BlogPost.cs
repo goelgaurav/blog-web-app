@@ -12,7 +12,7 @@ namespace Blog.Domain.Entities
         public string Title { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty; // Full blog body (HTML/markdown)
         public string? Author { get; set; } //For MVP scope, Auth and users is out of scope, Author is stored as string.
-        public string? Description { get; set; } // Meta description/snippet preview
+        public string? Description { get; set; } 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public List<Comment> Comments { get; set; } = new();
     }
