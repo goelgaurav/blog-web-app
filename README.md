@@ -25,6 +25,9 @@ Restore NuGet packages:
 
 ```bash
 dotnet restore
+Install dotnet ef tool globally:
+```bash 
+dotnet tool install --global dotnet-ef
 
 Apply EF Core migrations & create database:
 
