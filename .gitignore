@@ -19,3 +19,5 @@
 /blog-backend/tests/Blog.Tests/.vs/Blog.Tests
 /blog-backend/tests/Blog.Tests/bin/Debug/net9.0
 /blog-backend/tests/Blog.Tests/obj
+/blog-backend/blog-backend/src/obj
+/blog-backend/src/Blog.Persistence/blog-backend/src/obj
