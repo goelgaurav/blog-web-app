@@ -9,9 +9,10 @@ namespace Blog.Application.Abstractions
 {
     public interface ICommentRepository
     {
-        Task<IEnumerable<Comment>> GetAllByPostIdAsync(int postId);
-        Task AddAsync(Comment comment);
-        Task DeleteAsync(Comment comment);
+        Task<List<Comment>> GetAllByPostIdAsync(Guid postId);
+        Task<Comment> AddAsync(Comment comment);
+        Task<Comment?> UpdateAsync(Comment comment);
+        Task<Comment?> DeleteAsync(Guid id);
         Task SaveChangesAsync();
     }
 }

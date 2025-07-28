@@ -2,10 +2,7 @@
 using Blog.Domain.Entities;
 using Blog.Persistence.DbContexts;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Blog.Persistence.Repositories
@@ -16,19 +13,40 @@ namespace Blog.Persistence.Repositories
 
         public CommentRepository(BlogDbContext context) => _context = context;
 
-        public async Task<IEnumerable<Comment>> GetAllByPostIdAsync(int postId)
+        public async Task<List<Comment>> GetAllByPostIdAsync(Guid postId)
         {
             return await _context.Comments
-                    .Where(c => c.BlogPostId == postId)
-                    .ToListAsync();
+                .Where(c => c.BlogPostId == postId)
+                .ToListAsync();
         }
 
-        public async Task AddAsync(Comment comment) => await _context.Comments.AddAsync(comment);
-
-        public Task DeleteAsync(Comment comment)
+        public async Task<Comment> AddAsync(Comment comment)
         {
+            var entry = await _context.Comments.AddAsync(comment);
+            await SaveChangesAsync();
+            return entry.Entity;
+        }
+
+        public async Task<Comment?> UpdateAsync(Comment comment)
+        {
+            var existing = await _context.Comments.FindAsync(comment.Id);
+            if (existing is null)
+                return null;
+
+            _context.Entry(existing).CurrentValues.SetValues(comment);
+            await SaveChangesAsync();
+            return existing;
+        }
+
+        public async Task<Comment?> DeleteAsync(Guid id)
+        {
+            var comment = await _context.Comments.FindAsync(id);
+            if (comment is null)
+                return null;
+
             _context.Comments.Remove(comment);
-            return Task.CompletedTask;
+            await SaveChangesAsync();
+            return comment;
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
