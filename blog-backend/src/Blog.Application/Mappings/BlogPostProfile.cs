@@ -14,7 +14,11 @@ namespace Blog.Application.Mappings
         public BlogPostProfile()
         {
             CreateMap<BlogPostRequest, BlogPost>();
-            CreateMap<BlogPost, BlogPostResponse>();
+            CreateMap<BlogPost, BlogPostResponse>()
+                .ForMember(
+                  dest => dest.CommentCount,
+                  options => options.MapFrom(src => src.Comments.Count)
+                  );
         }
     }
 }

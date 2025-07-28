@@ -10,6 +10,7 @@ const BlogPostList = () => {
     const [displayCount, setDisplayCount] = useState(5);
     const [loadingMore, setLoadingMore] = useState(false);
     const loaderRef = useRef(null);
+    const [sortBy, setSortBy] = useState('recent');
 
     useEffect(() => {
         getBlogPosts()
@@ -51,11 +52,39 @@ const BlogPostList = () => {
         return <div>Error fetching blog posts: {error.message}</div>;
     }
 
-    const displayedPosts = posts.slice(0, displayCount);
+    const sortedPosts = [...posts].sort((a, b) => {
+        if (sortBy === 'comments') {
+            return (b.commentCount || 0) - (a.commentCount || 0);
+        }
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+    const displayedPosts = sortedPosts.slice(0, displayCount);
 
     return (
         <div className="max-w-4xl mx-auto px-4">
             <h1 className="text-3xl font-extrabold my-6">All Blog Posts</h1>
+            <div className="flex space-x-3 mb-6">
+                <button
+                    onClick={() => setSortBy('recent')}
+                    className={`px-4 py-2 rounded-full transition 
+              ${sortBy === 'recent'
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-gray-200 text-gray-700'}
+            `}
+                >
+                    Most Recent
+                </button>
+                <button
+                    onClick={() => setSortBy('comments')}
+                    className={`px-4 py-2 rounded-full transition
+              ${sortBy === 'comments'
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-gray-200 text-gray-700'}
+            `}
+                >
+                    Most Commented
+                </button>
+            </div>
 
             {displayedPosts.length === 0
                 ? <p>No blog posts found.</p>

@@ -15,6 +15,7 @@ namespace Blog.Application.DTOs
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public List<CommentResponse> Comments { get; set; } = new();
+        public int CommentCount { get; set; }
     }
 
 }
