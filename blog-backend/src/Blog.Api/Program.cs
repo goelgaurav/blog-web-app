@@ -2,6 +2,7 @@ using Blog.Api.Middleware;
 using Blog.Application.Abstractions;
 using Blog.Application.Mappings;
 using Blog.Application.Services.BlogPosts;
+using Blog.Application.Services.Comments;
 using Blog.Application.Validation;
 using Blog.Persistence.DbContexts;
 using Blog.Persistence.Repositories;
@@ -21,6 +22,7 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
 builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IBlogPostService, BlogPostService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<BlogPostValidator>();
 builder.Services.AddScoped<CommentValidator>();
 

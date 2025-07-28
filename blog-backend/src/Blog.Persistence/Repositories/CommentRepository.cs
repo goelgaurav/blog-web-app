@@ -17,8 +17,13 @@ namespace Blog.Persistence.Repositories
         {
             return await _context.Comments
                 .Where(c => c.BlogPostId == postId)
+                .OrderBy(c => c.PostedAt)
                 .ToListAsync();
         }
+
+        public async Task<Comment?> GetCommentByIdAsync(Guid Id) =>
+            await _context.Comments.FirstOrDefaultAsync(p => p.Id == Id);
+        
 
         public async Task<Comment> AddAsync(Comment comment)
         {

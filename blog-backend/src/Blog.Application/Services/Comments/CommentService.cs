@@ -22,13 +22,16 @@ namespace Blog.Application.Services.Comments
             return await _repository.GetAllByPostIdAsync(postId);
         }
 
-        public async Task<Comment> CreateAsync(Comment comment)
+        public async Task<Comment> CreateAsync(Guid postId, Comment comment)
         {
             var validationResult = _validator.Validate(comment);
             if (!validationResult.IsValid)
                 throw new ArgumentException(string.Join(";", validationResult.Errors.Select(e => e.ErrorMessage)));
 
+            comment.Id = Guid.NewGuid();
             comment.PostedAt = System.DateTime.UtcNow;
+            comment.BlogPostId = postId;
+
             return await _repository.AddAsync(comment);
         }
 
@@ -38,7 +41,7 @@ namespace Blog.Application.Services.Comments
             if (!validationResult.IsValid)
                 throw new ArgumentException(string.Join(";", validationResult.Errors.Select(e => e.ErrorMessage)));
 
-            var existing = await _repository.DeleteAsync(id);
+            var existing = await _repository.GetCommentByIdAsync(id);
             if (existing is null)
                 return null;
 

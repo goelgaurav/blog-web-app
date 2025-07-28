@@ -10,6 +10,7 @@ namespace Blog.Application.Abstractions
     public interface ICommentRepository
     {
         Task<List<Comment>> GetAllByPostIdAsync(Guid postId);
+        Task<Comment?> GetCommentByIdAsync(Guid Id);
         Task<Comment> AddAsync(Comment comment);
         Task<Comment?> UpdateAsync(Comment comment);
         Task<Comment?> DeleteAsync(Guid id);
