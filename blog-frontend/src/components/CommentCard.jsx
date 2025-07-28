@@ -1,11 +1,19 @@
-// @param {{ author?: string, content: string, createdAt: string }} props
-export default function CommentCard({ author, content, createdAt }) {
+export default function CommentCard({ comment }) {
+
+    let date = '';
+    if (comment.createdAt) {
+        const d = new Date(comment.postedAt);
+        date = isNaN(d.getTime())
+        ? ''
+        : d.toLocaleString();
+    }
+
   return (
     <div className="border p-4 rounded mb-2 bg-gray-50">
-      <p className="text-sm text-gray-700">{content}</p>
+      <p className="text-sm text-gray-700">{comment.content}</p>
       <div className="text-xs text-gray-500 mt-1">
-        By <span className="font-medium">{author || 'Anonymous'}</span> at{' '}
-        {new Date(createdAt).toLocaleString()}
+        By <span className="font-medium">{comment.author || 'Anonymous'}</span> at{' '}
+        {date && ` — ${date}`}
       </div>
     </div>
   );
