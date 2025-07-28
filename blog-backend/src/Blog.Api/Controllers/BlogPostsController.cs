@@ -21,7 +21,7 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<BlogPost>>> GetAllPostsAsync()
+        public async Task<ActionResult<List<BlogPostResponse>>> GetAllPostsAsync()
         {
             var posts = await _blogPostService.GetAllAsync();
             var response = _mapper.Map<List<BlogPostResponse>>(posts);
@@ -30,7 +30,8 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<BlogPost>> GetPostByIdAsync(Guid id)
+        [ActionName(nameof(GetPostByIdAsync))]
+        public async Task<ActionResult<BlogPostResponse>> GetPostByIdAsync(Guid id)
         {
             var post = await _blogPostService.GetByIdAsync(id);
             if (post is null)
@@ -40,7 +41,7 @@ namespace Blog.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BlogPost>> CreatePostAsync([FromBody] BlogPostRequest postDto)
+        public async Task<ActionResult<BlogPostResponse>> CreatePostAsync([FromBody] BlogPostRequest postDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -51,11 +52,11 @@ namespace Blog.Api.Controllers
 
             var response = _mapper.Map<BlogPostResponse>(created);
 
-            return CreatedAtAction(nameof(GetPostByIdAsync), new { id = created.Id, response });
+            return CreatedAtAction(nameof(GetPostByIdAsync), new { id = created.Id }, response );
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<ActionResult<BlogPost>> UpdatePostAsync(Guid id, [FromBody] BlogPostRequest postDto)
+        public async Task<ActionResult<BlogPostResponse>> UpdatePostAsync(Guid id, [FromBody] BlogPostRequest postDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -70,7 +71,7 @@ namespace Blog.Api.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        public async Task<ActionResult<BlogPost>> DeleteByIdAsync(Guid id)
+        public async Task<ActionResult<BlogPostResponse>> DeleteByIdAsync(Guid id)
         {
             var deleted = await _blogPostService.DeleteAsync(id);
             if (deleted is null)
