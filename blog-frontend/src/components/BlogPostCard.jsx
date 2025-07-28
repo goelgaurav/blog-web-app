@@ -1,11 +1,13 @@
 const BlogPostCard = ({ post }) => {
-  return (
-    <div className="border p-4 rounded mb-4 shadow-sm bg-white">
-      <h2 className="text-xl font-semibold">{post.title}</h2>
-      <p className="text-sm text-gray-500">{new Date(post.createdAt).toLocaleString()}</p>
-      <p className="mt-2 text-gray-700">{post.description}</p>
-      <p className="text-xs text-gray-400 mt-1">Author: {post.author || "Anonymous"}</p>
-    </div>
+  return (    
+    <article className="border border-gray-200 rounded-lg p-6 mb-6 bg-white hover:shadow-lg transition-shadow">
+        <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
+        <time className="block text-sm text-gray-500 mb-4">
+            {new Date(post.createdAt).toLocaleString()}
+        </time>
+        <p className="text-gray-700 mb-4">{post.description}</p>
+        <p className="text-xs text-gray-400 italic">Author: {post.author || 'Anonymous'}</p>
+    </article>
   );
 };
 

@@ -32,13 +32,14 @@ const BlogPostList = () => {
   }
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">All Blog Posts</h1>
-      {posts.length === 0 ? (
-        <p>No blog posts found.</p>
-      ) : (
-        posts.map((post) => <BlogPostCard key={post.id} post={post} />)
-      )}
+    <div className="max-w-4xl mx-auto px-4">
+        <h1 className="text-3xl font-extrabold my-6">All Blog Posts</h1>
+
+     {posts.length === 0
+       ? <p className="text-gray-600">No blog posts found.</p>
+       : posts.map((post) => <BlogPostCard key={post.id} post={post}/>)
+     }
+     
     </div>
   );
 };
