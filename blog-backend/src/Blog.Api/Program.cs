@@ -27,6 +27,7 @@ builder.Services.AddScoped<BlogPostValidator>();
 builder.Services.AddScoped<CommentValidator>();
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<BlogPostProfile>());
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<CommentProfile>());
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontEndDev", policy =>

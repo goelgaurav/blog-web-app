@@ -22,6 +22,10 @@ namespace Blog.Application.Services.Comments
             return await _repository.GetAllByPostIdAsync(postId);
         }
 
+        public async Task<Comment?> GetCommentByIdAsync(Guid id)
+        {
+            return await _repository.GetCommentByIdAsync(id);
+        }
         public async Task<Comment> CreateAsync(Guid postId, Comment comment)
         {
             var validationResult = _validator.Validate(comment);

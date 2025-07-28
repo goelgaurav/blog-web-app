@@ -10,8 +10,6 @@ namespace Blog.Api.Controllers
     [Route("api/[Controller]")]
     public class BlogPostsController : ControllerBase
     {
-        //ToDo: implement and use DTOs for request/response models
-
         private readonly IBlogPostService _blogPostService;
         private readonly IMapper _mapper; 
         public BlogPostsController(IBlogPostService blogPostService, IMapper mapper)
