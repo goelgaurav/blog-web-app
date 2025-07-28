@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getBlogPostById } from '../../api/blogPostsApi'; // ← post helper
-import { getCommentsByPostId } from '../../api/commentsApi'; // ← comment helper
+import { createComment, getCommentsByPostId } from '../../api/commentsApi'; // ← comment helper
 import CommentCard from '../../components/CommentCard';
 
 const BlogPostDetail = () => {
