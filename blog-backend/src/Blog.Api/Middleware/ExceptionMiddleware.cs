@@ -1,5 +1,4 @@
-﻿
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
 
 namespace Blog.Api.Middleware
@@ -8,12 +7,15 @@ namespace Blog.Api.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionMiddleware> _logger;
+        private readonly IWebHostEnvironment _env; 
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, IWebHostEnvironment env) 
         {
             _next = next;
             _logger = logger;
+            _env = env; 
         }
+
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -26,11 +28,16 @@ namespace Blog.Api.Middleware
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.Response.ContentType = "application/json";
 
-                var errorResponse = new
-                {
-                    message = "An unexpected error occurred.",
-                    details = ex.Message
-                };
+                var errorResponse = _env.IsDevelopment()
+                    ? new Dictionary<string, string>
+                    {
+                        { "message", "An unexpected error occurred." },
+                        { "details", ex.Message }
+                    }
+                    : new Dictionary<string, string>
+                    {
+                        { "message", "An unexpected error occurred." }
+                    };
 
                 var json = JsonSerializer.Serialize(errorResponse);
                 await context.Response.WriteAsync(json);

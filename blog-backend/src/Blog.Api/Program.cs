@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddControllers();
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -24,8 +25,19 @@ builder.Services.AddScoped<BlogPostValidator>();
 builder.Services.AddScoped<CommentValidator>();
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<BlogPostProfile>());
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontEndDev", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+
+    });
+});
 
 var app = builder.Build();
+app.UseCors("AllowFrontEndDev");
 
 // Configure the HTTP request pipeline.  
 if (app.Environment.IsDevelopment())
@@ -37,5 +49,5 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseSwagger();
 app.UseSwaggerUI();
-
+app.MapControllers();
 app.Run();
