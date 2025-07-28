@@ -13,7 +13,8 @@ const BlogPostList = () => {
       .then((res) => { 
         if(import.meta.env.DEV) console.log('Fetched blog posts:', res.data);
         if (Array.isArray(res.data)) {
-          setPosts(res.data);
+        const lastFivePosts = res.data.slice(0,5);
+          setPosts(lastFivePosts);
         } else {
           throw new Error('Expected array but got: ' + typeof res.data);
         }
@@ -39,7 +40,7 @@ const BlogPostList = () => {
        ? <p className="text-gray-600">No blog posts found.</p>
        : posts.map((post) => <BlogPostCard key={post.id} post={post}/>)
      }
-     
+
     </div>
   );
 };
