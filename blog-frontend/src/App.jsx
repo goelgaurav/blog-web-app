@@ -12,14 +12,13 @@ function App() {
   return (
     <BrowserRouter>
       <ErrorBoundary>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<BlogPostList />}/>
-          <Route path="/create" element={<CreateBlogPost />}/>
-          <Route path="/blogposts/:id" element={<BlogPostDetail />}/>
-
-        </Route>
-      </Routes>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<BlogPostList />} />
+            <Route path="/create" element={<CreateBlogPost />} />
+            <Route path="/blogposts/:id" element={<BlogPostDetail />} />
+          </Route>
+        </Routes>
       </ErrorBoundary>
       <ToastContainer position='bottom-right' autoClose={5000} hideProgressBar={false} closeOnClick pauseOnHover draggable pauseOnFocusLoss />
     </BrowserRouter>
