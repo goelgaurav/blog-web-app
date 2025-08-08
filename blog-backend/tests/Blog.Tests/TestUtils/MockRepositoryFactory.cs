@@ -15,10 +15,10 @@ namespace Blog.Tests.TestUtils
         {
             var mockRepo = new Mock<IBlogPostRepository>();
 
-            mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<string>()))
+            mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string?>()))
                 .ReturnsAsync(new List<BlogPost> {
-                    new() { Id = Guid.NewGuid(), Title = "Test 1", Content = "Body" },
-                    new() { Id = Guid.NewGuid(), Title = "Test 2", Content = "Body" }
+                        new() { Id = Guid.NewGuid(), Title = "Test 1", Content = "Body" },
+                        new() { Id = Guid.NewGuid(), Title = "Test 2", Content = "Body" }
                 });
 
             mockRepo.Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>()))

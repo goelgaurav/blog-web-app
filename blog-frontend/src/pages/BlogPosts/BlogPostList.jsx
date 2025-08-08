@@ -1,26 +1,33 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { getBlogPosts } from '../../api/blogPostsApi';
 import BlogPostCard from '../../components/BlogPostCard';
-import BlogPostSkeleton from '../../components/BlogPostSkeleton';
 const BlogPostList = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [displayCount, setDisplayCount] = useState(5);
-    const [loadingMore, setLoadingMore] = useState(false);
-    const loaderRef = useRef(null);
-    const [sortBy, setSortBy] = useState('recent');
     const [searchTerm, setSearchTerm] = useState('');
+    const [query, setQuery] = useState('');
+    const [page, setPage] = useState(1);
+    const pageSize = 5;
+    const [sortBy, setSortBy] = useState('recent');
+    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         //debugger
-        const term = searchTerm.trim();
-        getBlogPosts(term ? { search: term } : {})
+        const term = query.trim();
+        getBlogPosts({ search: term , page, pageSize, sort: sortBy })
             .then((data) => {
                 if (import.meta.env.DEV) console.log('Fetched blog posts:', data);
                 if (Array.isArray(data)) {
-                    setPosts(data);
+                    if (data.length > 0) {
+                        setPosts(data);
+                        setHasMore(data.length === pageSize);
+                    } else {
+                        toast.info(`You've reached the end of blog posts.`);
+                    }
+
                 } else {
                     throw new Error('Expected array but got: ' + typeof data);
                 }
@@ -31,37 +38,29 @@ const BlogPostList = () => {
                 setError(err);
             })
             .finally(() => setLoading(false));
-    }, [searchTerm]);
+    }, [query, page, sortBy]);
 
-    // infinite-scroll observer
-    useEffect(() => {
-        if (!loaderRef.current) return;
-        const obs = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting && displayCount < posts.length) {
-                setLoadingMore(true);
-                setTimeout(() => {
-                    setDisplayCount(c => Math.min(c + 5, posts.length));
-                    setLoadingMore(false);
-                }, 500);
-            }
-        }, { threshold: 1 });
-        obs.observe(loaderRef.current);
-        return () => obs.disconnect();
-    }, [loaderRef, displayCount, posts.length]);
-
-    if (loading) return <p className="p-4">Loading...</p>;
+    if (loading) {
+         return <p className="p-4">Loading...</p>;
+    }
 
     if (error) {
         return <div>Error fetching blog posts: {error.message}</div>;
     }
 
-    const sortedPosts = [...posts].sort((a, b) => {
-        if (sortBy === 'comments') {
-            return (b.commentCount || 0) - (a.commentCount || 0);
+    const handleSearchSubmit = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            setPage(1);
+            setQuery(searchTerm); 
         }
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
-    const displayedPosts = sortedPosts.slice(0, displayCount);
+    };
+
+    const handleSearchBlur = () => {
+        setPage(1);
+        setQuery(searchTerm); 
+    };
+
 
     return (
         <div className="max-w-4xl mx-auto px-4">
@@ -71,39 +70,55 @@ const BlogPostList = () => {
                 type="text" 
                 placeholder="Search blog posts title..." 
                 value={searchTerm} 
-                onChange={e => setSearchTerm(e.target.value)}/>
+                onChange={e => setSearchTerm(e.target.value)}
+                onKeyDown={handleSearchSubmit}
+                onBlur={handleSearchBlur}/>
+
             <div className="flex space-x-3 mb-6">
                 <button
                     onClick={() => setSortBy('recent')}
                     className={`px-4 py-2 rounded-full transition 
-              ${sortBy === 'recent'
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-200 text-gray-700'}
-            `}
+                                ${sortBy === 'recent'
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700'}
+                            `}
                 >
                     Most Recent
                 </button>
+
                 <button
                     onClick={() => setSortBy('comments')}
                     className={`px-4 py-2 rounded-full transition
-              ${sortBy === 'comments'
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-200 text-gray-700'}
-            `}
+                                ${sortBy === 'comments'
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-700'}
+                            `}
                 >
                     Most Commented
                 </button>
             </div>
 
-            {displayedPosts.length === 0
+            {posts.length === 0
                 ? <p>No blog posts found.</p>
-                : displayedPosts.map(p => <BlogPostCard key={p.id} post={p} />)}
+                : posts.map(p => <BlogPostCard key={p.id} post={p} />)}
 
-            {/* loader placeholder */}
-            <div ref={loaderRef} className="h-1"></div>
-            {loadingMore &&
-                Array(3).fill(0).map((_, i) => <BlogPostSkeleton key={i} />)
-            }
+            <div className='flex justify-center gap-4 my-6'>
+                <button
+                    disabled={page <= 1}
+                    onClick={() => setPage(page - 1)}>
+                    <span className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 hover:bg-gray-300">
+                        Previous
+                    </span>
+                </button>
+                <button
+                    onClick={() => setPage(page + 1)}
+                    disabled={!hasMore}
+                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                    <span className="px-4 py-2 bg-gray-200 text-gray-700 rounded disabled:opacity-50 hover:bg-gray-300">
+                        Next
+                    </span>
+                </button>
+            </div>
         </div>
     );
 };

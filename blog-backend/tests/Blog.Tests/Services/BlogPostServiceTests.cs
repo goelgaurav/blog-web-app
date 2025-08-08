@@ -24,11 +24,16 @@ namespace Blog.Tests.Services
         public async Task GetAllAsync_ReturnsList()
         {
             // Arrange
-            _repoMock.Setup(r => r.GetAllAsync(It.IsAny<string>()))
+            int page = 1;
+            int pageSize = 5;
+            string sort = "Title";
+            string? search = null;
+
+            _repoMock.Setup(r => r.GetAllAsync(page, pageSize, sort, search))
                      .ReturnsAsync(new List<BlogPost> { new() { Title = "Test" } });
 
             // Act
-            var result = await _service.GetAllAsync();
+            var result = await _service.GetAllAsync(page, pageSize, sort, search);
 
             // Assert
             Assert.Single(result);

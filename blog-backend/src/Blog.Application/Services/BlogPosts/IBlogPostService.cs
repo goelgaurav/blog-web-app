@@ -9,7 +9,7 @@ namespace Blog.Application.Services.BlogPosts
 {
     public interface IBlogPostService
     {
-        Task<List<BlogPost>> GetAllAsync(string? search = null);
+        Task<List<BlogPost>> GetAllAsync(int page, int pageSize, string sort, string? search = null);
         Task<BlogPost?> GetByIdAsync(Guid id);
         Task<BlogPost> CreateAsync(BlogPost post);
         Task<BlogPost?> UpdateAsync(Guid id, BlogPost post);
