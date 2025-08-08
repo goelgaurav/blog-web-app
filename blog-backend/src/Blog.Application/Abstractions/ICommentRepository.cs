@@ -13,7 +13,7 @@ namespace Blog.Application.Abstractions
         Task<Comment?> GetCommentByIdAsync(Guid Id);
         Task<Comment> AddAsync(Comment comment);
         Task<Comment?> UpdateAsync(Comment comment);
-        Task<Comment?> DeleteAsync(Guid id);
+        Task<Comment?> DeleteAsync(Guid postId, Guid id);
         Task SaveChangesAsync();
     }
 }

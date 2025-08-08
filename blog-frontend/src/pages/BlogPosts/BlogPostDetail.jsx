@@ -53,7 +53,7 @@ const BlogPostDetail = () => {
         <div className="p-6 max-w-3xl mx-auto">
             <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
             <p className="text-sm text-gray-500 mb-4">
-                {new Date(post.postedAt).toLocaleString()} — {post.author || "Anonymous"}
+                {new Date(post.createdAt).toLocaleString()} — {post.author || "Anonymous"}
             </p>
             <div className="prose mb-8">
                 <div dangerouslySetInnerHTML={{ __html: post.content }} />
@@ -63,7 +63,10 @@ const BlogPostDetail = () => {
                 <h2 className="text-2xl font-semibold mb-3">Comments</h2>
                 {comments.length === 0
                     ? <p>No comments yet.</p>
-                    : comments.map(c => <CommentCard key={c.id} comment={c} />)}
+                    : comments.map(c => <CommentCard key={c.id} comment={c} postId={id}
+                        onDelete={deletedId => setComments(comments.filter(c => c.id !== deletedId))} />
+                    )}
+                    {console.log(id)}
             </section>
 
             <section>

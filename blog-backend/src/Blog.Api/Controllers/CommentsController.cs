@@ -51,5 +51,18 @@ namespace Blog.Api.Controllers
             return CreatedAtAction(nameof(GetCommentByIdAsync), new { postId, id = created.Id }, response);
         }
 
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult<CommentResponse>> Delete(Guid postId, Guid id)
+        {
+            var deleted = await _commentService.DeleteAsync(postId, id);
+
+            if(deleted is null)
+                return NotFound();
+
+            return NoContent();
+
+
+        }
+
     }
 }
