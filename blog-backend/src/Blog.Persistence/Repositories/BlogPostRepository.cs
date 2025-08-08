@@ -19,8 +19,13 @@ namespace Blog.Persistence.Repositories
         public async Task<BlogPost?> GetByIdAsync(Guid id) =>
             await _context.BlogPosts.Include(p => p.Comments).FirstOrDefaultAsync(p => p.Id == id);
 
-        public async Task<List<BlogPost>> GetAllAsync() =>
-            await _context.BlogPosts.Include(p => p.Comments).ToListAsync();
+        public async Task<List<BlogPost>> GetAllAsync(string? search = null)
+        {
+            var query = _context.BlogPosts.Include(p => p.Comments).AsQueryable();
+            if(!string.IsNullOrWhiteSpace(search) && search.Length >= 2)
+                query = query.Where(p => p.Title.Contains(search));
+            return await query.ToListAsync();
+        }
 
         public async Task<BlogPost> AddAsync(BlogPost post)
         {

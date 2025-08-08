@@ -11,9 +11,12 @@ const BlogPostList = () => {
     const [loadingMore, setLoadingMore] = useState(false);
     const loaderRef = useRef(null);
     const [sortBy, setSortBy] = useState('recent');
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        getBlogPosts()
+        //debugger
+        const term = searchTerm.trim();
+        getBlogPosts(term ? { search: term } : {})
             .then((data) => {
                 if (import.meta.env.DEV) console.log('Fetched blog posts:', data);
                 if (Array.isArray(data)) {
@@ -28,7 +31,7 @@ const BlogPostList = () => {
                 setError(err);
             })
             .finally(() => setLoading(false));
-    }, []);
+    }, [searchTerm]);
 
     // infinite-scroll observer
     useEffect(() => {
@@ -63,6 +66,12 @@ const BlogPostList = () => {
     return (
         <div className="max-w-4xl mx-auto px-4">
             <h1 className="text-3xl font-extrabold my-6">All Blog Posts</h1>
+            <input 
+                className="mb-4 w-full px-3 py-2 border border-gray-300 rounded"
+                type="text" 
+                placeholder="Search blog posts title..." 
+                value={searchTerm} 
+                onChange={e => setSearchTerm(e.target.value)}/>
             <div className="flex space-x-3 mb-6">
                 <button
                     onClick={() => setSortBy('recent')}

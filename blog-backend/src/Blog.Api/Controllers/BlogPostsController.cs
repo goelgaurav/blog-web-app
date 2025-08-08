@@ -19,9 +19,9 @@ namespace Blog.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<BlogPostResponse>>> GetAllPostsAsync()
+        public async Task<ActionResult<List<BlogPostResponse>>> GetAllPostsAsync([FromQuery] string? search = null)
         {
-            var posts = await _blogPostService.GetAllAsync();
+            var posts = await _blogPostService.GetAllAsync(search);
             var response = _mapper.Map<List<BlogPostResponse>>(posts);
 
             return Ok(response);

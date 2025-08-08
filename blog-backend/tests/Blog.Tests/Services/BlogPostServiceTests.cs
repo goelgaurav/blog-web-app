@@ -24,7 +24,7 @@ namespace Blog.Tests.Services
         public async Task GetAllAsync_ReturnsList()
         {
             // Arrange
-            _repoMock.Setup(r => r.GetAllAsync())
+            _repoMock.Setup(r => r.GetAllAsync(It.IsAny<string>()))
                      .ReturnsAsync(new List<BlogPost> { new() { Title = "Test" } });
 
             // Act

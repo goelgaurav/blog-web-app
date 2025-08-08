@@ -15,7 +15,7 @@ namespace Blog.Tests.TestUtils
         {
             var mockRepo = new Mock<IBlogPostRepository>();
 
-            mockRepo.Setup(repo => repo.GetAllAsync())
+            mockRepo.Setup(repo => repo.GetAllAsync(It.IsAny<string>()))
                 .ReturnsAsync(new List<BlogPost> {
                     new() { Id = Guid.NewGuid(), Title = "Test 1", Content = "Body" },
                     new() { Id = Guid.NewGuid(), Title = "Test 2", Content = "Body" }

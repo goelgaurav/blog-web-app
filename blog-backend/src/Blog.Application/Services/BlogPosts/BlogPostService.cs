@@ -19,9 +19,9 @@ namespace Blog.Application.Services.BlogPosts
             _validator = validator;
         }
 
-        public async Task<List<BlogPost>> GetAllAsync()
+        public async Task<List<BlogPost>> GetAllAsync(string? search = null)
         {
-            return await _repository.GetAllAsync();
+            return await _repository.GetAllAsync(search);
         }
 
         public async Task<BlogPost?> GetByIdAsync(Guid id)

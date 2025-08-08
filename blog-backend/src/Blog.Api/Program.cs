@@ -32,7 +32,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontEndDev", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5174")
         .AllowAnyHeader()
         .AllowAnyMethod();
 
@@ -46,11 +46,12 @@ app.UseCors("AllowFrontEndDev");
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
-app.UseSwagger();
-app.UseSwaggerUI();
+
 app.MapControllers();
 app.Run();
