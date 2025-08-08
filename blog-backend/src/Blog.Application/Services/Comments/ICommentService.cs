@@ -10,6 +10,6 @@ namespace Blog.Application.Services.Comments
         Task<Comment?> GetCommentByIdAsync(Guid Id);
         Task<Comment> CreateAsync(Guid PostId, Comment comment);
         Task<Comment?> UpdateAsync(Guid id, Comment comment);
-        Task<Comment?> DeleteAsync(Guid id);
+        Task<Comment?> DeleteAsync(Guid postId, Guid id);
     }
 }

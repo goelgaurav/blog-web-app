@@ -43,7 +43,7 @@ namespace Blog.Persistence.Repositories
             return existing;
         }
 
-        public async Task<Comment?> DeleteAsync(Guid id)
+        public async Task<Comment?> DeleteAsync(Guid postId,Guid id)
         {
             var comment = await _context.Comments.FindAsync(id);
             if (comment is null)

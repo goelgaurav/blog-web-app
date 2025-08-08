@@ -8,3 +8,6 @@ export const getCommentById = (postId, id) =>
 
 export const createComment = (postId, comment) =>
   axios.post(`/blogposts/${postId}/comments`, comment).then((r) => r.data);
+
+export const deleteComment = (postId, id) =>
+  axios.delete(`/blogposts/${postId}/comments/${id}`).then((r) => r.data);

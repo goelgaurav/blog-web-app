@@ -56,9 +56,9 @@ namespace Blog.Application.Services.Comments
             return await _repository.UpdateAsync(existing);
         }
 
-        public async Task<Comment?> DeleteAsync(Guid id)
+        public async Task<Comment?> DeleteAsync(Guid postId, Guid id)
         {
-            return await _repository.DeleteAsync(id);
+            return await _repository.DeleteAsync(postId,id);
         }
     }
 }
