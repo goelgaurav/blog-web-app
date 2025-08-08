@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getBlogPostById } from '../../api/blogPostsApi'; // ← post helper
-import { createComment, getCommentsByPostId } from '../../api/commentsApi'; // ← comment helper
+import { getBlogPostById } from '../../api/blogPostsApi';
+import { createComment, getCommentsByPostId } from '../../api/commentsApi';
 import CommentCard from '../../components/CommentCard';
 
 const BlogPostDetail = () => {
@@ -56,7 +56,6 @@ const BlogPostDetail = () => {
                 {new Date(post.postedAt).toLocaleString()} — {post.author || "Anonymous"}
             </p>
             <div className="prose mb-8">
-                {/* assuming your API returns HTML or markdown-rendered */}
                 <div dangerouslySetInnerHTML={{ __html: post.content }} />
             </div>
 
